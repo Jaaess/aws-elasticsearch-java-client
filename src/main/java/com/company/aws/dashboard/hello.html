@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+	<head>
+		<meta charset=utf-8>
+			<title>Hello Java-FX!</title>
+		</meta>
+	</head>
+
+	<body>
+		<table>
+			<tr>
+				<td style="width:20%;position:absolute;top:30%;">
+					<br/>
+					<h5> Geschwindigkeit: </h5>
+					<select name="example" style="width:50%;height:30px;">
+						<option value="A">70 Km/h</option>
+						<option value="B">80 Km/h</option>
+						<option value="C">90 Km/h</option>
+					</select>
+					<br/>
+					<h5> Drehzahl des motors: </h5>
+					<select name="example" style="width:50%;height:30px;">
+						<option value="A">1700 rpm</option>
+						<option value="B">1800 rpm</option>
+						<option value="C">1900 rpm</option>
+					</select>
+					<br/>
+					<h5> Öltemperatur: </h5>
+					<select name="example" style="width:50%;height:30px;">
+						<option value="A">130°</option>
+						<option value="B">140°</option>
+						<option value="C">150°</option>
+						<option value="D">160°</option>
+					</select>
+				</td>
+				<td style="width:80%">
+					<h3>CO2 Ausstoß nach Marke und nach Modell:</h3>
+					<br/>
+					<p>
+						<iframe src="http://localhost:5601/app/kibana#/visualize/edit/103d0110-788f-11e8-b5dd-49dfbe93bdac?embed=true&_g=(refreshInterval%3A('%24%24hashKey'%3A'object%3A3005'%2Cdisplay%3A'5%20seconds'%2Cpause%3A!f%2Csection%3A1%2Cvalue%3A5000)%2Ctime%3A(from%3Anow-15m%2Cmode%3Aquick%2Cto%3Anow))" height="800" width="1500"></iframe>
+					</p>
+					<br/>
+					<h3>CO2 Ausstoß über letzte Jahre:</h3>
+					<p>
+						<iframe src="http://localhost:5601/app/kibana#/visualize/edit/c3974500-788e-11e8-b5dd-49dfbe93bdac?embed=true&_g=(refreshInterval:('$$hashKey':'object:246',display:'5+seconds',pause:!f,section:1,value:5000),time:(from:now-15m,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(language:lucene,query:''),uiState:(vis:(colors:('CO2-Aussto%C3%9F+(g%2FKm)':%23E24D42,'CO2-Aussto%C3%9F+Max':%23E24D42))),vis:(aggs:!((enabled:!t,id:'1',params:(customLabel:'CO2-Aussto%C3%9F+(g%2FKm)',field:CO2-Ausstoss.bis),schema:metric,type:avg),(enabled:!t,id:'3',params:(customLabel:'Auftrittsdatum+(Jahr)',field:Auftrittsdatum,missingBucket:!f,missingBucketLabel:Missing,order:asc,orderBy:_term,otherBucket:!f,otherBucketLabel:Other,size:100),schema:segment,type:terms),(enabled:!t,id:'4',params:(customLabel:'Leistung+(PS)',field:Leistung.bis),schema:metric,type:avg)),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,categoryAxes:!((id:CategoryAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),position:bottom,scale:(type:linear),show:!t,style:(),title:(),type:category)),grid:(categoryLines:!f,style:(color:%23eee),valueAxis:ValueAxis-1),legendPosition:top,orderBucketsBySum:!f,seriesParams:!((data:(id:'1',label:'CO2-Aussto%C3%9F+(g%2FKm)'),drawLinesBetweenPoints:!t,interpolate:linear,lineWidth:3,mode:normal,show:true,showCircles:!t,type:line,valueAxis:ValueAxis-1),(data:(id:'4',label:'Leistung+(PS)'),drawLinesBetweenPoints:!t,interpolate:linear,lineWidth:2,mode:normal,show:!t,showCircles:!t,type:line,valueAxis:ValueAxis-1)),times:!(),type:line,valueAxes:!((id:ValueAxis-1,labels:(filter:!f,rotate:0,show:!t,truncate:100),name:LeftAxis-1,position:left,scale:(defaultYExtents:!f,mode:normal,setYExtents:!f,type:linear),show:!t,style:(),title:(text:'CO2-Aussto%C3%9F+(g%2FKm)'),type:value))),title:'CO2+Aussto%C3%9F+Max+%C3%BCber+die+Jahre_version_1',type:line))"  style="width:1500px;height:800px;"></iframe>
+					</p>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
