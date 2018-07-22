@@ -25,8 +25,6 @@ import org.junit.Test;
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.company.aws.elasticsearch.AWSRequestSigningApacheInterceptor;
-import com.company.aws.elasticsearch.Constants;
 
 public class SnapshotAWSTest {
 
@@ -42,10 +40,12 @@ public class SnapshotAWSTest {
 	// 1. Environment variables–AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY.
 	static final AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
 	// 2. Java system properties–aws.accessKeyId and aws.secretKey
-	// static final AWSCredentialsProvider credentialsProvider = new SystemPropertiesCredentialsProvider();
+	// static final AWSCredentialsProvider credentialsProvider = new
+	// SystemPropertiesCredentialsProvider();
 	// 3. The default credential profiles file– typically located at
 	// ~/.aws/credentials
-	// static final AWSCredentialsProvider credentialsProvider = new DefaultAWSCredentialsProviderChain();
+	// static final AWSCredentialsProvider credentialsProvider = new
+	// DefaultAWSCredentialsProviderChain();
 
 	RestClient esClient;
 	HttpEntity entity;
@@ -83,6 +83,10 @@ public class SnapshotAWSTest {
 			int randomNum = ThreadLocalRandom.current().nextInt(100, 300 + 1);
 			int randomNum_2 = ThreadLocalRandom.current().nextInt(100, 300 + 1);
 			int randomNum_3 = ThreadLocalRandom.current().nextInt(0, 50);
+			int random_day = ThreadLocalRandom.current().nextInt(1, 28);
+			int random_month = ThreadLocalRandom.current().nextInt(1, 12);
+			int random_year = ThreadLocalRandom.current().nextInt(2000, 2018);
+			String random_date = random_year + "-" + random_month + "-" + random_day;
 
 			String payload = "{\r\n" + "	\"Modell\": \"TestAuto_" + i + "\",\r\n" + "	\"Marke\": \"Test" + i
 					+ "\",\r\n" + "	\"Auftrittsdatum\":  " + (int) (2022 + i - 1000) + ",\r\n"
@@ -94,7 +98,8 @@ public class SnapshotAWSTest {
 					+ "	\"CO2-Ausstoss\": {\r\n" + "		\"Einheit\": \"g/km\",\r\n" + "		\"von\": "
 					+ (int) (i - 1000 + randomNum) + ",\r\n" + "		\"bis\": " + (int) (i - 1000 + randomNum)
 					+ " \r\n" + "	},\r\n" + "	\"Aufbauarten\": \"Roadster\",\r\n" + "	\"Kraftstoff\": \"Super\",\r\n"
-					+ "	\"Uebersicht\": \"testing\"\r\n" + "}";
+					+ "	\"Uebersicht\": \"testing\",\r\n" + "	\"registrationDate\": \"" + random_date + "\",\r\n"
+					+ "	\"registrationDate_yy-mm-dd\": \"" + random_date + "\"}";
 
 			// Index a document
 			entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
@@ -102,15 +107,20 @@ public class SnapshotAWSTest {
 			System.out.println(response.toString());
 			// Thread.sleep(1000);
 		}
+
 	}
 
 	@Test
 	public void delete_100_added_posts_AWS() throws ClientProtocolException, IOException, InterruptedException {
-
-		for (int i = 1000; i < 1100; i++) {
-			Response response = esClient.performRequest("DELETE", indexingPath + "/" + i);
-			System.out.println(response.toString());
-			assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+		int i = 1000;
+		while (i <= 1100) {
+			try {
+				Response response = esClient.performRequest("DELETE", indexingPath + "/" + i);
+				System.out.println(response.toString());
+				assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+			} catch (Exception e) {
+			}
+			i++;
 		}
 	}
 }

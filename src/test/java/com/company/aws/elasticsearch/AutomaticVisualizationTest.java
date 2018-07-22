@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
@@ -25,10 +26,8 @@ import org.junit.Test;
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.company.aws.elasticsearch.AWSRequestSigningApacheInterceptor;
-import com.company.aws.elasticsearch.Constants;
 
-public class AutomaticVisulizationTest {
+public class AutomaticVisualizationTest {
 
 	static final AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
 	private static String indexingPath = "/.kibana/doc";
@@ -114,32 +113,12 @@ public class AutomaticVisulizationTest {
 	public void put_area_diagram()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
 
-		String first_X_param = "Auftrittsdatum";
-		String first_Y_param = "Letzter-Neupreis.bis";
-		String second_Y_param = "Leistung.bis";
-		// String first_X_param_label = "Auftrittsdatum";
-		String first_Y_param_label = "Letzter-Neupreis";
-		String second_Y_param_label = "Leistung";
-
-		String payload = "{\r\n" + "        \"type\": \"visualization\",\r\n"
-				+ "        \"updated_at\": \"2018-07-19T14:39:45.404Z\",\r\n" + "        \"visualization\": {\r\n"
-				+ "            \"title\": \"_Area_visualization\",\r\n"
-				+ "            \"visState\": \"{\\\"title\\\":\\\"Area_visualization\\\",\\\"type\\\":\\\"area\\\",\\\"params\\\":{\\\"type\\\":\\\"area\\\",\\\"grid\\\":{\\\"categoryLines\\\":true,\\\"style\\\":{\\\"color\\\":\\\"#eee\\\"}},\\\"categoryAxes\\\":[{\\\"id\\\":\\\"CategoryAxis-1\\\",\\\"type\\\":\\\"category\\\",\\\"position\\\":\\\"bottom\\\",\\\"show\\\":true,\\\"style\\\":{},\\\"scale\\\":{\\\"type\\\":\\\"linear\\\"},\\\"labels\\\":{\\\"show\\\":true,\\\"truncate\\\":100,\\\"rotate\\\":75,\\\"filter\\\":true},\\\"title\\\":{}}],\\\"valueAxes\\\":[{\\\"id\\\":\\\"ValueAxis-1\\\",\\\"name\\\":\\\"LeftAxis-1\\\",\\\"type\\\":\\\"value\\\",\\\"position\\\":\\\"left\\\",\\\"show\\\":true,\\\"style\\\":{},\\\"scale\\\":{\\\"type\\\":\\\"linear\\\",\\\"mode\\\":\\\"normal\\\"},\\\"labels\\\":{\\\"show\\\":true,\\\"rotate\\\":0,\\\"filter\\\":false,\\\"truncate\\\":100},\\\"title\\\":{\\\"text\\\":\\\"Co2 Austoﬂ\\\"}}],\\\"seriesParams\\\":[{\\\"show\\\":\\\"true\\\",\\\"type\\\":\\\"area\\\",\\\"mode\\\":\\\"stacked\\\",\\\"data\\\":{\\\"label\\\":\\\""
-				+ first_Y_param_label
-				+ "\\\",\\\"id\\\":\\\"1\\\"},\\\"drawLinesBetweenPoints\\\":true,\\\"showCircles\\\":true,\\\"interpolate\\\":\\\"linear\\\",\\\"valueAxis\\\":\\\"ValueAxis-1\\\"},{\\\"show\\\":true,\\\"mode\\\":\\\"stacked\\\",\\\"type\\\":\\\"area\\\",\\\"drawLinesBetweenPoints\\\":true,\\\"showCircles\\\":true,\\\"interpolate\\\":\\\"linear\\\",\\\"data\\\":{\\\"id\\\":\\\"3\\\",\\\"label\\\":\\\"Leistung (PS)\\\"},\\\"valueAxis\\\":\\\"ValueAxis-1\\\"}],\\\"addTooltip\\\":true,\\\"addLegend\\\":true,\\\"legendPosition\\\":\\\"right\\\",\\\"times\\\":[],\\\"addTimeMarker\\\":false},\\\"aggs\\\":[{\\\"id\\\":\\\"1\\\",\\\"enabled\\\":true,\\\"type\\\":\\\"avg\\\",\\\"schema\\\":\\\"metric\\\",\\\"params\\\":{\\\"field\\\":\\\""
-				+ first_Y_param + "\\\",\\\"customLabel\\\":\\\"" + first_Y_param_label
-				+ "\\\"}},{\\\"id\\\":\\\"2\\\",\\\"enabled\\\":true,\\\"type\\\":\\\"terms\\\",\\\"schema\\\":\\\"segment\\\",\\\"params\\\":{\\\"field\\\":\\\""
-				+ first_X_param
-				+ "\\\",\\\"otherBucket\\\":false,\\\"otherBucketLabel\\\":\\\"Other\\\",\\\"missingBucket\\\":false,\\\"missingBucketLabel\\\":\\\"Missing\\\",\\\"size\\\":1000000,\\\"order\\\":\\\"desc\\\",\\\"orderBy\\\":\\\"_term\\\"}},{\\\"id\\\":\\\"3\\\",\\\"enabled\\\":true,\\\"type\\\":\\\"avg\\\",\\\"schema\\\":\\\"metric\\\",\\\"params\\\":{\\\"field\\\":\\\""
-				+ second_Y_param + "\\\",\\\"customLabel\\\":\\\"Leistung (PS)\\\"}}]}\",\r\n"
-				+ "            \"uiStateJSON\": \"{\\\"vis\\\":{\\\"colors\\\":{\\\"" + second_Y_param_label
-				+ "\\\":\\\"#B7DBAB\\\",\\\"" + first_Y_param_label
-				+ "\\\":\\\"#EA6460\\\"},\\\"legendOpen\\\":false}}\",\r\n" + "            \"description\": \"\",\r\n"
-				+ "            \"version\": 1,\r\n" + "            \"kibanaSavedObjectMeta\": {\r\n"
-				+ "                \"searchSourceJSON\": \"{\\\"index\\\":\\\""
-				+ Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID
-				+ "\\\",\\\"filter\\\":[],\\\"query\\\":{\\\"query\\\":\\\"\\\",\\\"language\\\":\\\"lucene\\\"}}\"\r\n"
-				+ "            }\r\n" + "        }\r\n" + "    }";
+		ClassLoader classLoader = getClass().getClassLoader();
+		String payload = IOUtils
+				.toString(classLoader.getResourceAsStream("fixtures/put_area_diagram_payload.json"), "UTF-8")
+				.replace("first_X_param", "Auftrittsdatum").replace("first_Y_param", "Letzter-Neupreis.bis")
+				.replace("second_Y_param", "Leistung.bis").replace("first_X_param_label", "Auftrittsdatum")
+				.replace("first_Y_param_label", "Letzter-Neupreis").replace("second_Y_param_label", "Leistung (PS)");
 
 		// Index a document
 		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
