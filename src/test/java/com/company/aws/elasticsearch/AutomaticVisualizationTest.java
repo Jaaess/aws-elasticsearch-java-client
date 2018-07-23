@@ -5,11 +5,13 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
@@ -113,14 +115,21 @@ public class AutomaticVisualizationTest {
 	public void put_area_diagram()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
 
-		ClassLoader classLoader = getClass().getClassLoader();
-		String payload = IOUtils
-				.toString(classLoader.getResourceAsStream("fixtures/put_area_diagram_payload.json"), "UTF-8")
-				.replace("first_X_param", "Auftrittsdatum").replace("first_Y_param", "Letzter-Neupreis.bis")
-				.replace("second_Y_param", "Leistung.bis").replace("first_X_param_label", "Auftrittsdatum")
-				.replace("first_Y_param_label", "Letzter-Neupreis").replace("second_Y_param_label", "Leistung (PS)");
+		Map<String, String> valuesMap = new HashMap<>();
+		valuesMap.put("visualization-titel", "test area diagramm");
+		valuesMap.put("first-x-param", "Auftrittsdatum");
+		valuesMap.put("first-y-param", "Letzter-Neupreis.bis");
+		valuesMap.put("second-y-param", "Leistung.bis");
+		valuesMap.put("first-x-param-label", "Auftrittsdatum");
+		valuesMap.put("first-y-param-label", "Letzter-Neupreis");
+		valuesMap.put("second-y-param-label", "Leistung (PS)");
+		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
 
-		// Index a document
+		ClassLoader classLoader = getClass().getClassLoader();
+		StrSubstitutor sub = new StrSubstitutor(valuesMap);
+		String payload = sub.replace(IOUtils
+				.toString(classLoader.getResourceAsStream("fixtures/put_area_diagram_payload.json"), "UTF-8"));
+		
 		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
 		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + id, params, entity);
 		System.out.println(response.toString());
