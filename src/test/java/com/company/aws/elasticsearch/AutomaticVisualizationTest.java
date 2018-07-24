@@ -66,70 +66,60 @@ public class AutomaticVisualizationTest {
 		params = Collections.emptyMap();
 		response = esClient.performRequest("PUT", snapshotPath, params, entity);
 		System.out.println(response.toString());
-
 	}
 
+	
 	@Test
-	public void put_line_diagram()
+	public void put_line_diagramm()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
-
-		String first_X_param = "Auftrittsdatum";
-		String first_Y_param = "Letzter-Neupreis.bis";
-		String second_Y_param = "Leistung.bis";
-		String first_X_param_label = "Auftrittsdatum";
-		String first_Y_param_label = "Letzter-Neupreis";
-		String second_Y_param_label = "Leistung (PS)";
-
-		String payload = "{\r\n" + "        \"type\": \"visualization\",\r\n"
-				+ "        \"updated_at\": \"2018-07-11T20:54:04.182Z\",\r\n" + "        \"visualization\": {\r\n"
-				+ "            \"title\": \"_" + "line_diagram_X_" + first_X_param + "_Y_" + first_Y_param + "_Y_"
-				+ second_Y_param + "_test" + "_\",\r\n"
-				+ "            \"visState\": \"{\\\"title\\\":\\\" to complete\\\",\\\"type\\\":\\\"line\\\",\\\"params\\\":{\\\"type\\\":\\\"line\\\",\\\"grid\\\":{\\\"categoryLines\\\":false,\\\"style\\\":{\\\"color\\\":\\\"#eee\\\"},\\\"valueAxis\\\":\\\"ValueAxis-1\\\"},\\\"categoryAxes\\\":[{\\\"id\\\":\\\"CategoryAxis-1\\\",\\\"type\\\":\\\"category\\\",\\\"position\\\":\\\"bottom\\\",\\\"show\\\":true,\\\"style\\\":{},\\\"scale\\\":{\\\"type\\\":\\\"linear\\\"},\\\"labels\\\":{\\\"show\\\":true,\\\"truncate\\\":100,\\\"rotate\\\":75,\\\"filter\\\":true},\\\"title\\\":{}}],\\\"valueAxes\\\":[{\\\"id\\\":\\\"ValueAxis-1\\\",\\\"name\\\":\\\"LeftAxis-1\\\",\\\"type\\\":\\\"value\\\",\\\"position\\\":\\\"left\\\",\\\"show\\\":true,\\\"style\\\":{},\\\"scale\\\":{\\\"type\\\":\\\"linear\\\",\\\"mode\\\":\\\"normal\\\",\\\"defaultYExtents\\\":false,\\\"setYExtents\\\":false},\\\"labels\\\":{\\\"show\\\":true,\\\"rotate\\\":0,\\\"filter\\\":false,\\\"truncate\\\":100},\\\"title\\\":{\\\"text\\\":\\\""
-				+ first_Y_param_label
-				+ "\\\"}}],\\\"seriesParams\\\":[{\\\"show\\\":\\\"true\\\",\\\"type\\\":\\\"line\\\",\\\"mode\\\":\\\"normal\\\",\\\"data\\\":{\\\"label\\\":\\\""
-				+ first_Y_param_label
-				+ "\\\",\\\"id\\\":\\\"1\\\"},\\\"valueAxis\\\":\\\"ValueAxis-1\\\",\\\"drawLinesBetweenPoints\\\":true,\\\"showCircles\\\":true,\\\"lineWidth\\\":3,\\\"interpolate\\\":\\\"linear\\\"},{\\\"show\\\":true,\\\"mode\\\":\\\"normal\\\",\\\"type\\\":\\\"line\\\",\\\"drawLinesBetweenPoints\\\":true,\\\"showCircles\\\":true,\\\"interpolate\\\":\\\"linear\\\",\\\"lineWidth\\\":2,\\\"data\\\":{\\\"id\\\":\\\"4\\\",\\\"label\\\":\\\"Leistung (PS)\\\"},\\\"valueAxis\\\":\\\"ValueAxis-1\\\"}],\\\"addTooltip\\\":true,\\\"addLegend\\\":true,\\\"legendPosition\\\":\\\"top\\\",\\\"times\\\":[],\\\"addTimeMarker\\\":false,\\\"orderBucketsBySum\\\":false},\\\"aggs\\\":[{\\\"id\\\":\\\"1\\\",\\\"enabled\\\":true,\\\"type\\\":\\\"avg\\\",\\\"schema\\\":\\\"metric\\\",\\\"params\\\":{\\\"field\\\":\\\""
-				+ first_Y_param + "\\\",\\\"customLabel\\\":\\\"" + first_Y_param_label
-				+ "\\\"}},{\\\"id\\\":\\\"3\\\",\\\"enabled\\\":true,\\\"type\\\":\\\"terms\\\",\\\"schema\\\":\\\"segment\\\",\\\"params\\\":{\\\"field\\\":\\\""
-				+ first_X_param
-				+ "\\\",\\\"otherBucket\\\":false,\\\"otherBucketLabel\\\":\\\"Other\\\",\\\"missingBucket\\\":false,\\\"missingBucketLabel\\\":\\\"Missing\\\",\\\"size\\\":1000000000,\\\"order\\\":\\\"asc\\\",\\\"orderBy\\\":\\\"_term\\\",\\\"customLabel\\\":\\\""
-				+ first_X_param_label
-				+ "\\\"}},{\\\"id\\\":\\\"4\\\",\\\"enabled\\\":true,\\\"type\\\":\\\"avg\\\",\\\"schema\\\":\\\"metric\\\",\\\"params\\\":{\\\"field\\\":\\\""
-				+ second_Y_param + "\\\",\\\"customLabel\\\":\\\"" + second_Y_param_label + "\\\"}}]}\",\r\n"
-				+ "            \"uiStateJSON\": \"{\\\"vis\\\":{\\\"colors\\\":{\\\"" + first_Y_param_label
-				+ "\\\":\\\"#7CFC00\\\",\\\"" + second_Y_param_label + "\\\":\\\"#E24D42\\\"}}}\",\r\n"
-				+ "            \"description\": \"\",\r\n" + "            \"version\": 1,\r\n"
-				+ "            \"kibanaSavedObjectMeta\": {\r\n"
-				+ "                \"searchSourceJSON\": \"{\\\"index\\\":\\\""
-				+ Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID
-				+ "\\\",\\\"filter\\\":[],\\\"query\\\":{\\\"query\\\":\\\"\\\",\\\"language\\\":\\\"lucene\\\"}}\"\r\n"
-				+ "            }\r\n" + "        }\r\n" + "    }";
-
-		// Index a document
-		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
-		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + id, params, entity);
-		System.out.println(response.toString());
-	}
-
-	@Test
-	public void put_area_diagram()
-			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
-
+		
 		Map<String, String> valuesMap = new HashMap<>();
-		valuesMap.put("visualization-titel", "test area diagramm");
-		valuesMap.put("first-x-param", "Auftrittsdatum");
-		valuesMap.put("first-y-param", "Letzter-Neupreis.bis");
+		//titel
+		valuesMap.put("visualization-titel", "line-diagramm-reference-1");
+		//fields
+		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
+		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
 		valuesMap.put("second-y-param", "Leistung.bis");
-		valuesMap.put("first-x-param-label", "Auftrittsdatum");
-		valuesMap.put("first-y-param-label", "Letzter-Neupreis");
+		//labels
+		valuesMap.put("first-x-param-label", "registeration date");
+		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
 		valuesMap.put("second-y-param-label", "Leistung (PS)");
+		
 		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
 
 		ClassLoader classLoader = getClass().getClassLoader();
 		StrSubstitutor sub = new StrSubstitutor(valuesMap);
-		String payload = sub.replace(IOUtils
-				.toString(classLoader.getResourceAsStream("fixtures/put_area_diagram_payload.json"), "UTF-8"));
+		String payload = sub.replace(
+				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-area-diagramm-payload.json"), "UTF-8"));
+
+		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
+		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + id, params, entity);
+		System.out.println(response.toString());
+	}
+	
+	@Test
+	public void put_area_diagramm()
+			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
+
+		Map<String, String> valuesMap = new HashMap<>();
+		//titel
+		valuesMap.put("visualization-titel", "area-diagramm-reference-1");
+		//fields
+		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
+		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
+		valuesMap.put("second-y-param", "Leistung.bis");
+		//labels
+		valuesMap.put("first-x-param-label", "register date");
+		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
+		valuesMap.put("second-y-param-label", "Leistung (PS)");
 		
+		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
+
+		ClassLoader classLoader = getClass().getClassLoader();
+		StrSubstitutor sub = new StrSubstitutor(valuesMap);
+		String payload = sub.replace(
+				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-area-diagramm-payload.json"), "UTF-8"));
+
 		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
 		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + id, params, entity);
 		System.out.println(response.toString());
@@ -142,5 +132,4 @@ public class AutomaticVisualizationTest {
 		System.out.println(response.toString());
 		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
 	}
-
 }
