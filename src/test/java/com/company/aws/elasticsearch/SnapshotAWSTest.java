@@ -82,7 +82,7 @@ public class SnapshotAWSTest {
 
 			int randomNum = ThreadLocalRandom.current().nextInt(100, 300 + 1);
 			int randomNum_2 = ThreadLocalRandom.current().nextInt(100, 300 + 1);
-			int randomNum_3 = ThreadLocalRandom.current().nextInt(0, 50);
+			int randomNum_3 = ThreadLocalRandom.current().nextInt(0, 30000);
 			int random_day = ThreadLocalRandom.current().nextInt(1, 28);
 			int random_month = ThreadLocalRandom.current().nextInt(1, 12);
 			int random_year = ThreadLocalRandom.current().nextInt(2000, 2018);
@@ -91,8 +91,8 @@ public class SnapshotAWSTest {
 			String payload = "{\r\n" + "	\"Modell\": \"TestAuto_" + i + "\",\r\n" + "	\"Marke\": \"Test" + i
 					+ "\",\r\n" + "	\"Auftrittsdatum\":  " + (int) (2022 + i - 1000) + ",\r\n"
 					+ "	\"Letzter-Neupreis\": {\r\n" + "		\"Einheit\": \"EUR\",\r\n" + "		\"von\": "
-					+ (int) (i - randomNum_3 + 43.580) + " ,\r\n" + "		\"bis\":  "
-					+ (int) (i - randomNum_3 + 43.580) + "\r\n" + "	},\r\n" + "	\"Leistung\": {\r\n"
+					+ (int) (i - randomNum_3 + 54580) + " ,\r\n" + "		\"bis\":  "
+					+ (int) (i - randomNum_3 + 54580) + "\r\n" + "	},\r\n" + "	\"Leistung\": {\r\n"
 					+ "		\"Einheit\": \"PS\",\r\n" + "		\"von\": " + (int) (i - 1000 + randomNum_2) + " ,\r\n"
 					+ "		\"bis\":   " + (int) (i - 1000 + randomNum_2) + "        \r\n" + "	},\r\n"
 					+ "	\"CO2-Ausstoss\": {\r\n" + "		\"Einheit\": \"g/km\",\r\n" + "		\"von\": "
@@ -105,9 +105,8 @@ public class SnapshotAWSTest {
 			entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
 			response = esClient.performRequest("PUT", indexingPath + "/" + i, params, entity);
 			System.out.println(response.toString());
-			// Thread.sleep(1000);
+			Thread.sleep(1000);
 		}
-
 	}
 
 	@Test
@@ -119,6 +118,7 @@ public class SnapshotAWSTest {
 				System.out.println(response.toString());
 				assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
 			} catch (Exception e) {
+				
 			}
 			i++;
 		}

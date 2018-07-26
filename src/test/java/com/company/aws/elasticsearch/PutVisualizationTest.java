@@ -29,7 +29,7 @@ import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 
-public class AutomaticVisualizationTest {
+public class PutVisualizationTest {
 
 	static final AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
 	private static String indexingPath = "/.kibana/doc";
@@ -42,12 +42,11 @@ public class AutomaticVisualizationTest {
 	HttpEntity entity;
 	Response response;
 	Map<String, String> params;
-	UUID id;
+	UUID lineDiagramId;
+	UUID areaDiagramId;
 
 	@Before
-	public void initialize() throws IOException {
-
-		id = UUID.randomUUID();
+	public void setUp() throws IOException {
 
 		Properties log4jProp = new Properties();
 		log4jProp.setProperty("log4j.rootLogger", "WARN");
@@ -61,75 +60,78 @@ public class AutomaticVisualizationTest {
 		esClient = RestClient.builder(HttpHost.create(Constants.AES_ENDPOINT))
 				.setHttpClientConfigCallback(hacb -> hacb.addInterceptorLast(interceptor)).build();
 
-		// Register a snapshot repository
+		// register a snapshot repository
 		entity = new NStringEntity(payload_snapshot, ContentType.APPLICATION_JSON);
 		params = Collections.emptyMap();
 		response = esClient.performRequest("PUT", snapshotPath, params, entity);
 		System.out.println(response.toString());
 	}
 
-	
 	@Test
-	public void put_line_diagramm()
+	public void put_line_diagram()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
-		
+
+		lineDiagramId = UUID.randomUUID();
+
 		Map<String, String> valuesMap = new HashMap<>();
-		//titel
-		valuesMap.put("visualization-titel", "line-diagramm-reference-1");
-		//fields
+		// title
+		valuesMap.put("visualization-titel", "line-diagram-reference-1");
+		// fields
 		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
 		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
 		valuesMap.put("second-y-param", "Leistung.bis");
-		//labels
-		valuesMap.put("first-x-param-label", "registeration date");
+		// labels
+		valuesMap.put("first-x-param-label", "registration date");
 		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
 		valuesMap.put("second-y-param-label", "Leistung (PS)");
-		
+		// fontSizes
+		valuesMap.put("font-size-x", "20px");
+		valuesMap.put("font-size-y", "15px");
+
 		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
 
 		ClassLoader classLoader = getClass().getClassLoader();
 		StrSubstitutor sub = new StrSubstitutor(valuesMap);
 		String payload = sub.replace(
-				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-area-diagramm-payload.json"), "UTF-8"));
+				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-line-diagram-payload.json"), "UTF-8"));
 
 		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
-		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + id, params, entity);
+		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + lineDiagramId, params, entity);
 		System.out.println(response.toString());
+		System.out.println("line-diagrmm-id: " + lineDiagramId);
 	}
-	
+
 	@Test
-	public void put_area_diagramm()
+	public void put_area_diagram()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
 
+		areaDiagramId = UUID.randomUUID();
+
 		Map<String, String> valuesMap = new HashMap<>();
-		//titel
-		valuesMap.put("visualization-titel", "area-diagramm-reference-1");
-		//fields
+		// title
+		valuesMap.put("visualization-titel", "area-diagram-reference-1");
+		// fields
 		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
 		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
 		valuesMap.put("second-y-param", "Leistung.bis");
-		//labels
+		// labels
 		valuesMap.put("first-x-param-label", "register date");
 		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
 		valuesMap.put("second-y-param-label", "Leistung (PS)");
-		
+		// fontSizes
+		valuesMap.put("font-size-x", "20px");
+		valuesMap.put("font-size-y", "15px");
+
 		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
 
 		ClassLoader classLoader = getClass().getClassLoader();
 		StrSubstitutor sub = new StrSubstitutor(valuesMap);
 		String payload = sub.replace(
-				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-area-diagramm-payload.json"), "UTF-8"));
+				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-area-diagram-payload.json"), "UTF-8"));
 
 		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
-		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + id, params, entity);
+		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + areaDiagramId, params, entity);
 		System.out.println(response.toString());
-	}
-
-	@Test
-	public void delete_last_put_line_diagram() throws ClientProtocolException, IOException, InterruptedException {
-
-		Response response = esClient.performRequest("DELETE", indexingPath + "/visualization:" + id);
-		System.out.println(response.toString());
-		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+		System.out.println("area-diagram-id: " + areaDiagramId);
 	}
 }

@@ -44,7 +44,8 @@ public class KibanaDiagramms extends Application {
 		WebEngine webEngine = webView.getEngine();
 
 		public MyBrowser() {
-			URL urlHello = getClass().getResource("hello.html");
+			ClassLoader classLoader = getClass().getClassLoader();
+			URL urlHello = classLoader.getResource("hello.html");
 			webEngine.load(urlHello.toExternalForm());
 			getChildren().add(webView);
 		}

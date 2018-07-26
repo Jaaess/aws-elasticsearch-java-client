@@ -1,0 +1,14 @@
+{
+   "type":"visualization",
+   "updated_at":"2018-07-24T14:49:35.613Z",
+   "visualization":{
+      "title":"${visualization-titel}",
+      "visState":"{\"title\":\"${visualization-titel}\",\"type\":\"area\",\"params\":{\"addLegend\":true,\"addTimeMarker\":false,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"filter\":true,\"rotate\":75,\"show\":true,\"truncate\":20,\"fontSize\":\"${font-size-x}\"},\"position\":\"bottom\",\"scale\":{\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"}},\"legendPosition\":\"top\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"${first-y-param-label}\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"linear\",\"mode\":\"stacked\",\"show\":\"true\",\"showCircles\":true,\"type\":\"area\",\"valueAxis\":\"ValueAxis-1\"},{\"data\":{\"id\":\"3\",\"label\":\"${second-y-param-label}\"},\"drawLinesBetweenPoints\":true,\"interpolate\":\"linear\",\"mode\":\"stacked\",\"show\":true,\"showCircles\":true,\"type\":\"area\",\"valueAxis\":\"ValueAxis-1\"}],\"times\":[],\"type\":\"area\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"rotate\":0,\"show\":true,\"truncate\":100,\"fontSize\":\"${font-size-y}\"},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"mode\":\"normal\",\"type\":\"linear\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"\"},\"type\":\"value\"}]},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"${first-y-param}\",\"customLabel\":\"${first-y-param-label}\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"schema\":\"segment\",\"params\":{\"field\":\"${first-x-param}\",\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"size\":1000000,\"order\":\"desc\",\"orderBy\":\"_term\",\"customLabel\":\"${first-x-param-label}\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"${second-y-param}\",\"customLabel\":\"${second-y-param-label}\"}}]}",
+      "uiStateJSON":"{\"vis\":{\"colors\":{\"${first-y-param-label}\":\"#B7DBAB\",\"${first-y-param-label}\":\"#EA6460\"},\"legendOpen\":true}}",
+      "description":"",
+      "version":1,
+      "kibanaSavedObjectMeta":{
+         "searchSourceJSON":"{\"index\":\"${search-id}\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"\"}}"
+      }
+   }
+}
