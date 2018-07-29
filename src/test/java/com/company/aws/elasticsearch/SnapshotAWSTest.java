@@ -5,10 +5,13 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequestInterceptor;
@@ -75,7 +78,7 @@ public class SnapshotAWSTest {
 	}
 
 	@Test
-	public void perform_100_posts()
+	public void perform_100_posts_old()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
 
 		for (int i = 1000; i < 1100; i++) {
@@ -105,7 +108,49 @@ public class SnapshotAWSTest {
 			entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
 			response = esClient.performRequest("PUT", indexingPath + "/" + i, params, entity);
 			System.out.println(response.toString());
-			Thread.sleep(1000);
+			Thread.sleep(500);
+		}
+	}
+
+	@Test
+	public void perform_100_posts()
+			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
+
+		for (int i = 1000; i < 1100; i++) {
+			int randomNum = ThreadLocalRandom.current().nextInt(100, 300 + 1);
+			int randomNum_2 = ThreadLocalRandom.current().nextInt(100, 300 + 1);
+			int randomNum_3 = ThreadLocalRandom.current().nextInt(0, 30000);
+			int random_day = ThreadLocalRandom.current().nextInt(1, 28);
+			int random_month = ThreadLocalRandom.current().nextInt(1, 12);
+			int random_year = ThreadLocalRandom.current().nextInt(2000, 2018);
+			String random_date = random_year + "-" + random_month + "-" + random_day;
+
+			Map<String, String> valuesMap = new HashMap<>();
+			valuesMap.put("modell", "modell-" + i);
+			valuesMap.put("marke", "marke-" + i);
+			valuesMap.put("auftrittsdatum", Integer.toString(2022 + i - 1000));
+			valuesMap.put("letzter-neupreis-von", Integer.toString(i - randomNum_3 + 54580));
+			valuesMap.put("letzter-neupreis-bis", Integer.toString(i - randomNum_3 + 54580));
+			valuesMap.put("leistung-von", Integer.toString(i - 1000 + randomNum_2));
+			valuesMap.put("leistung-bis", Integer.toString(i - 1000 + randomNum_2));
+			valuesMap.put("co2-austoss-von", Integer.toString(i - 1000 + randomNum));
+			valuesMap.put("co2-austoss-bis", Integer.toString(i - 1000 + randomNum));
+			valuesMap.put("aufbauarten", "Roadster");
+			valuesMap.put("kraftstoff", "Super");
+			valuesMap.put("uebersicht", "testing...");
+			valuesMap.put("registration-date", random_date);
+			valuesMap.put("registration-date-yy-mm-dd", random_date);
+
+			ClassLoader classLoader = getClass().getClassLoader();
+			StrSubstitutor sub = new StrSubstitutor(valuesMap);
+			String payload = sub.replace(
+					IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-auto-payload.json"), "UTF-8"));
+
+			// Index a document
+			entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
+			response = esClient.performRequest("PUT", indexingPath + "/" + i, params, entity);
+			System.out.println(response.toString());
+			Thread.sleep(500);
 		}
 	}
 
@@ -118,7 +163,7 @@ public class SnapshotAWSTest {
 				System.out.println(response.toString());
 				assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
 			} catch (Exception e) {
-				
+
 			}
 			i++;
 		}

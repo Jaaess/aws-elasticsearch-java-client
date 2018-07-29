@@ -29,7 +29,7 @@ import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 
-public class PutVisualizationTest {
+public class CompleteScenarioTest {
 
 	static final AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
 	private static String indexingPath = "/.kibana/doc";
@@ -43,7 +43,7 @@ public class PutVisualizationTest {
 	Response response;
 	Map<String, String> params;
 	UUID lineDiagramId;
-	UUID areaDiagramId;
+	UUID dashboardId;
 
 	@Before
 	public void setUp() throws IOException {
@@ -68,14 +68,16 @@ public class PutVisualizationTest {
 	}
 
 	@Test
-	public void put_line_diagram()
+	public void create_vis_create_dashbord_share()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
-
+		//
+		// Step 1: Create Visualization.
+		//
 		lineDiagramId = UUID.randomUUID();
 
 		Map<String, String> valuesMap = new HashMap<>();
 		// title
-		valuesMap.put("visualization-titel", "pretty-line-diagram-reference-1");
+		valuesMap.put("visualization-titel", "sceanario-complet-test-visualization_3");
 		// fields
 		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
 		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
@@ -100,40 +102,56 @@ public class PutVisualizationTest {
 		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 		System.out.println(response.toString());
 		System.out.println("line-diagrmm-id: " + lineDiagramId);
-	}
+		//
+		// Step 2: Create the dash board, embed the visualization inside it, set the
+		// background color.
+		//
+		dashboardId = UUID.randomUUID();
 
-	@Test
-	public void put_area_diagram()
-			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
-
-		areaDiagramId = UUID.randomUUID();
-
-		Map<String, String> valuesMap = new HashMap<>();
+		Map<String, String> dashboardValuesMap = new HashMap<>();
 		// title
-		valuesMap.put("visualization-titel", "pretty-area-diagram-reference-1");
-		// fields
-		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
-		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
-		valuesMap.put("second-y-param", "Leistung.bis");
-		// labels
-		valuesMap.put("first-x-param-label", "register date");
-		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
-		valuesMap.put("second-y-param-label", "Leistung (PS)");
-		// fontSizes
-		valuesMap.put("font-size-x", "20px");
-		valuesMap.put("font-size-y", "15px");
+		dashboardValuesMap.put("dashboard-titel", "sceanario-complet-test-dashboard_3");
+		// visualization id
+		dashboardValuesMap.put("visualization-id", lineDiagramId.toString());
+		// dark theme boolean
+		dashboardValuesMap.put("dark-theme", "true");
+		// hidePanelTitles boolean
+		dashboardValuesMap.put("hide-panel-titles", "true");
+		// useMargins boolean, for many visualizations on the same dash board
+		dashboardValuesMap.put("use-margin", "true");
+		// grid-data
+		dashboardValuesMap.put("grid-x", Integer.toString(0));
+		dashboardValuesMap.put("grid-y", Integer.toString(0));
+		dashboardValuesMap.put("grid-w", Integer.toString(12));
+		dashboardValuesMap.put("grid-h", Integer.toString(8));
+		dashboardValuesMap.put("grid-i", Integer.toString(1));
 
-		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
+		sub = new StrSubstitutor(dashboardValuesMap);
+		String dashboardPayload = sub.replace(IOUtils
+				.toString(classLoader.getResourceAsStream("fixtures/put-dashboard-1-vis-payload.json"), "UTF-8"));
 
-		ClassLoader classLoader = getClass().getClassLoader();
-		StrSubstitutor sub = new StrSubstitutor(valuesMap);
-		String payload = sub.replace(
-				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-area-diagram-payload.json"), "UTF-8"));
-
-		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
-		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + areaDiagramId, params, entity);
+		entity = new NStringEntity(dashboardPayload, ContentType.APPLICATION_JSON);
+		response = esClient.performRequest("PUT", indexingPath + "/dashboard:" + dashboardId, params, entity);
 		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 		System.out.println(response.toString());
-		System.out.println("area-diagram-id: " + areaDiagramId);
+		System.out.println("dashboard-id: " + dashboardId);
+		//
+		// Step 3: Get shareable dash board link.
+		//
+		// link
+		Map<String, String> shareableLinkValues = new HashMap<>();
+		shareableLinkValues.put("dashboard-uuid", dashboardId.toString());
+		sub = new StrSubstitutor(shareableLinkValues);
+		System.out.println("Share saved dashboard Link: \n" + sub.replace(Constants.DASHBOARD_SHAREABLE_LINK));
+		// embedded iframe
+		Map<String, String> iframeValues = new HashMap<>();
+		iframeValues.put("dashboard-uuid", dashboardId.toString());
+		iframeValues.put("iframe-height", Integer.toString(800));
+		iframeValues.put("iframe-width", Integer.toString(1300));
+		sub = new StrSubstitutor(iframeValues);
+		System.out.println("Share saved dashboard embedded iframe: \n"
+				+ sub.replace(Constants.DASHBOARD_SHAREABLE_EMBEDDED_IFRAME));
+
 	}
+
 }

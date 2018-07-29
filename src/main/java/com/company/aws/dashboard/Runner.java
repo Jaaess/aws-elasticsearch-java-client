@@ -15,7 +15,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
-public class KibanaDiagramms extends Application {
+public class Runner extends Application {
 
 	private Scene scene;
 	MyBrowser myBrowser;
@@ -24,7 +24,7 @@ public class KibanaDiagramms extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("IAV Automotive Engineering");
 		myBrowser = new MyBrowser();
-		scene = new Scene(myBrowser, 1750, 900, Color.web("#666970"));
+		scene = new Scene(myBrowser, 1350, 700, Color.web("#666970"));
 		scene.getStylesheets().add("BrowserToolbar.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();

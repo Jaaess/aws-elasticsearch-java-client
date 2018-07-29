@@ -1,0 +1,16 @@
+{
+	"type": "dashboard",
+	"updated_at": "2018-07-27T20:51:36.076Z",
+	"dashboard": {
+		"title": "${dashboard-titel}",
+		"hits": 0,
+		"description": "",
+		"panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":${grid-x},\"y\":${grid-y},\"w\":${grid-w},\"h\":${grid-h},\"i\":\"${grid-i}\"},\"version\":\"6.2.3\",\"type\":\"visualization\",\"id\":\"${visualization-id}\"}]",
+		"optionsJSON": "{\"darkTheme\":${dark-theme},\"useMargins\":${use-margin},\"hidePanelTitles\":${hide-panel-titles}}",
+		"version": 1,
+		"timeRestore": false,
+		"kibanaSavedObjectMeta": {
+			"searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[],\"highlightAll\":true,\"version\":true}"
+		}
+	}
+}
