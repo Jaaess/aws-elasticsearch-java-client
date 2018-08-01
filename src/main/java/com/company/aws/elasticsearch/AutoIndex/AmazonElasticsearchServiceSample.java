@@ -1,4 +1,4 @@
-package com.company.aws.elasticsearch;
+package com.company.aws.elasticsearch.AutoIndex;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -16,6 +16,7 @@ import org.elasticsearch.client.RestClient;
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.campany.aws.elasticsearch.general.Constants;
 
 public class AmazonElasticsearchServiceSample {
 

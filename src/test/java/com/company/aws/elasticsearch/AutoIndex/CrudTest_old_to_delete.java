@@ -1,4 +1,4 @@
-package com.company.aws.elasticsearch;
+package com.company.aws.elasticsearch.AutoIndex;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,7 +22,9 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CrudTest {
+import com.campany.aws.elasticsearch.general.Constants;
+
+public class CrudTest_old_to_delete {
 
 	TransportClient transportClient;
 

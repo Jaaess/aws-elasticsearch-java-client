@@ -1,0 +1,34 @@
+{
+	"modell": "${modell}",
+	"marke": "${marke}",
+	"identifizierungsnummer": "${identifizierungsnummer}",
+	"uebersicht": "${uebersicht}",
+	"auftrittsdatum": "${auftrittsdatum}",
+	"letzter-neupreis": {
+		"einheit": "EUR",
+		"von": ${letzter-neupreis-von},
+		"bis": ${letzter-neupreis-bis}
+	},
+	"leistung": {
+		"einheit": "kW",
+		"von": ${leistung-von},
+		"bis": ${leistung-bis}
+	},
+	"co2-ausstoss": {
+		"einheit": "g/km",
+		"von": ${co2-austoss-von},
+		"bis": ${co2-austoss-bis}
+	},
+	"aufbauarten": "${aufbauarten}",
+	"kraftstoff": "${kraftstoff}",
+	"motordrehzahl": ${motordrehzahl},
+	"kuehlmitteltemperatur": ${kuehlmitteltemperatur},
+	"saugrohrdruck": ${saugrohrdruck},
+	"fahrzeuggeschwindigkeit": ${fahrzeuggeschwindigkeit},
+	"ansauglufttemperatur": ${ansauglufttemperatur},
+	"airbag-is-active": ${airbag-is-active},
+	"gps-coordinates": {
+		"latitude": ${latitude},
+		"longitude": ${longitude}
+	}
+}

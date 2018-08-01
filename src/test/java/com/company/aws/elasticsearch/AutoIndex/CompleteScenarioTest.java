@@ -1,8 +1,9 @@
-package com.company.aws.elasticsearch;
+package com.company.aws.elasticsearch.AutoIndex;
 
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,8 +28,10 @@ import org.junit.Test;
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.campany.aws.elasticsearch.general.Constants;
+import com.company.aws.elasticsearch.AutoIndex.AWSRequestSigningApacheInterceptor;
 
-public class DeleteVisualizationTest {
+public class CompleteScenarioTest {
 
 	static final AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
 	private static String indexingPath = "/.kibana/doc";
@@ -42,9 +45,10 @@ public class DeleteVisualizationTest {
 	Response response;
 	Map<String, String> params;
 	UUID lineDiagramId;
+	UUID dashboardId;
 
 	@Before
-	public void initialize() throws IOException {
+	public void setUp() throws IOException {
 
 		Properties log4jProp = new Properties();
 		log4jProp.setProperty("log4j.rootLogger", "WARN");
@@ -63,21 +67,31 @@ public class DeleteVisualizationTest {
 		params = Collections.emptyMap();
 		response = esClient.performRequest("PUT", snapshotPath, params, entity);
 		System.out.println(response.toString());
-		
-		// firstly PUT line diagram visualization
+	}
+
+	@Test
+	public void create_visualization_create_dashbord_share()
+			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
+		//
+		// Step 1: Create Visualization.
+		//
 		lineDiagramId = UUID.randomUUID();
 
 		Map<String, String> valuesMap = new HashMap<>();
 		// title
-		valuesMap.put("visualization-titel", "line-diagram-reference-1");
+		valuesMap.put("visualization-titel", "sceanario-complet-test-visualization_preis_logScale_8");
 		// fields
 		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
-		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
+		// valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
+		valuesMap.put("first-y-param", "Letzter-Neupreis.bis");
 		valuesMap.put("second-y-param", "Leistung.bis");
 		// labels
 		valuesMap.put("first-x-param-label", "registration date");
-		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
+		// valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
+		valuesMap.put("first-y-param-label", "Letzter-Neupreis.bis (Euro)");
 		valuesMap.put("second-y-param-label", "Leistung (PS)");
+		// Scale type: linear, log or square root function
+		valuesMap.put("scale-type", "log");
 		// fontSizes
 		valuesMap.put("font-size-x", "20px");
 		valuesMap.put("font-size-y", "15px");
@@ -91,15 +105,59 @@ public class DeleteVisualizationTest {
 
 		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
 		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + lineDiagramId, params, entity);
+		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 		System.out.println(response.toString());
-		System.out.println("line-diagram-id before: " + lineDiagramId);
-	}
-	
-	@Test
-	public void delete_line_diagram() throws ClientProtocolException, IOException, InterruptedException {
-		System.out.println("line-diagram-id after: " + lineDiagramId);
-		Response response = esClient.performRequest("DELETE", indexingPath + "/visualization:" + lineDiagramId);
+		System.out.println("line-diagrmm-id: " + lineDiagramId);
+		//
+		// Step 2: Create the dash board, embed the visualization inside it, set the
+		// background color.
+		//
+		dashboardId = UUID.randomUUID();
+
+		Map<String, String> dashboardValuesMap = new HashMap<>();
+		// title
+		dashboardValuesMap.put("dashboard-titel", "sceanario-complet-test-dashboard_logScale_4");
+		// visualization id
+		dashboardValuesMap.put("visualization-id", lineDiagramId.toString());
+		// dark theme boolean
+		dashboardValuesMap.put("dark-theme", "true");
+		// hidePanelTitles boolean
+		dashboardValuesMap.put("hide-panel-titles", "true");
+		// useMargins boolean, for many visualizations on the same dash board
+		dashboardValuesMap.put("use-margin", "true");
+		// grid-data
+		dashboardValuesMap.put("grid-x", Integer.toString(0));
+		dashboardValuesMap.put("grid-y", Integer.toString(0));
+		dashboardValuesMap.put("grid-w", Integer.toString(12));
+		dashboardValuesMap.put("grid-h", Integer.toString(8));
+		dashboardValuesMap.put("grid-i", Integer.toString(1));
+
+		sub = new StrSubstitutor(dashboardValuesMap);
+		String dashboardPayload = sub.replace(IOUtils
+				.toString(classLoader.getResourceAsStream("fixtures/put-dashboard-1-vis-payload.json"), "UTF-8"));
+
+		entity = new NStringEntity(dashboardPayload, ContentType.APPLICATION_JSON);
+		response = esClient.performRequest("PUT", indexingPath + "/dashboard:" + dashboardId, params, entity);
+		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 		System.out.println(response.toString());
-		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK);
+		System.out.println("dashboard-id: " + dashboardId);
+		//
+		// Step 3: Get shareable dash board link.
+		//
+		// link
+		Map<String, String> shareableLinkValues = new HashMap<>();
+		shareableLinkValues.put("dashboard-uuid", dashboardId.toString());
+		sub = new StrSubstitutor(shareableLinkValues);
+		System.out.println("Share saved dashboard Link: \n" + sub.replace(Constants.DASHBOARD_SHAREABLE_LINK));
+		// embedded iframe
+		Map<String, String> iframeValues = new HashMap<>();
+		iframeValues.put("dashboard-uuid", dashboardId.toString());
+		iframeValues.put("iframe-height", Integer.toString(800));
+		iframeValues.put("iframe-width", Integer.toString(1300));
+		sub = new StrSubstitutor(iframeValues);
+		System.out.println("Share saved dashboard embedded iframe: \n"
+				+ sub.replace(Constants.DASHBOARD_SHAREABLE_EMBEDDED_IFRAME));
+
 	}
+
 }

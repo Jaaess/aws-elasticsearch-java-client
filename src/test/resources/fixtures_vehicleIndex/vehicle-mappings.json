@@ -1,0 +1,149 @@
+{
+	"doc": {
+		"properties": {
+			"marke": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"modell": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"identifizierungsnummer": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"uebersicht": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"auftrittsdatum": {
+				"type": "date",
+				"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+			},
+			"letzter-neupreis": {
+				"properties": {
+					"einheit": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"bis": {
+						"type": "float"
+					},
+					"von": {
+						"type": "float"
+					}
+				}
+			},
+			"Leistung": {
+				"properties": {
+					"einheit": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"bis": {
+						"type": "long"
+					},
+					"von": {
+						"type": "long"
+					}
+				}
+			},
+			"co2-ausstoss": {
+				"properties": {
+					"einheit": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"bis": {
+						"type": "long"
+					},
+					"von": {
+						"type": "long"
+					}
+				}
+			},
+			"aufbauarten": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"kraftstoff": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"motordrehzahl": {
+				"type": "long"
+			},
+			"kuehlmitteltemperatur": {
+				"type": "long"
+			},
+			"saugrohrdruck": {
+				"type": "long"
+			},
+			"fahrzeuggeschwindigkeit": {
+				"type": "long"
+			},
+			"ansauglufttemperatur": {
+				"type": "long"
+			},
+			"airbag-is-active": {
+				"type": "boolean"
+			},
+			"gps-coordinates": {
+				"properties": {
+					"latitude": {
+						"type": "long"
+					},
+					"longitude": {
+						"type": "long"
+					}
+				}
+			}
+		}
+	}
+}

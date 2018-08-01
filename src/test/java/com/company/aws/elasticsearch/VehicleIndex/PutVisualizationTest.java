@@ -1,4 +1,4 @@
-package com.company.aws.elasticsearch;
+package com.company.aws.elasticsearch.VehicleIndex;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,6 +28,8 @@ import org.junit.Test;
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.campany.aws.elasticsearch.general.Constants;
+import com.company.aws.elasticsearch.AutoIndex.AWSRequestSigningApacheInterceptor;
 
 public class PutVisualizationTest {
 
@@ -68,72 +70,43 @@ public class PutVisualizationTest {
 	}
 
 	@Test
-	public void put_line_diagram()
+	public void put_line_diagram_with_3_params()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
 
 		lineDiagramId = UUID.randomUUID();
 
 		Map<String, String> valuesMap = new HashMap<>();
 		// title
-		valuesMap.put("visualization-titel", "pretty-line-diagram-reference-1");
+		valuesMap.put("visualization-titel", "drei-parameter-line-diagram-reference-3"); // ${visualization-titel}
 		// fields
-		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
-		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
-		valuesMap.put("second-y-param", "Leistung.bis");
+		valuesMap.put("first-x-param", "auftrittsdatum"); // ${first-x-param}
+		valuesMap.put("first-y-param", "kuehlmitteltemperatur"); // ${first-y-param}
+		valuesMap.put("second-y-param", "motordrehzahl"); // ${second-y-param}
+		valuesMap.put("third-y-param", "fahrzeuggeschwindigkeit"); // ${third-y-param}
+		// x-interval
+		valuesMap.put("x-interval", "s"); // ${first-x-param}
 		// labels
-		valuesMap.put("first-x-param-label", "registration date");
-		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
-		valuesMap.put("second-y-param-label", "Leistung (PS)");
+		valuesMap.put("first-x-param-label", "Zeit (s)"); // ${first-x-param-label}
+		valuesMap.put("first-y-param-label", "Kuelmitteltemperatur (∞C)"); // ${first-y-param-label}
+		valuesMap.put("second-y-param-label", "Motordrehzahl (rpm)"); // ${second-y-param-label}
+		valuesMap.put("third-y-param-label", "Geschwindigkeit (km/h)"); // ${third-y-param-label}
 		// fontSizes
-		valuesMap.put("font-size-x", "20px");
-		valuesMap.put("font-size-y", "15px");
+		valuesMap.put("font-size-x", "20px"); // ${font-size-x}
+		valuesMap.put("font-size-y", "15px"); // ${font-size-y}
+		// Scale type: linear, log or square root function
+		valuesMap.put("scale-type", "square root"); // ${scale-type}
 
-		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
+		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID_VEHICLE_INDEX); // ${search-id}
 
 		ClassLoader classLoader = getClass().getClassLoader();
 		StrSubstitutor sub = new StrSubstitutor(valuesMap);
-		String payload = sub.replace(
-				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-line-diagram-payload.json"), "UTF-8"));
+		String payload = sub.replace(IOUtils.toString(
+				classLoader.getResourceAsStream("fixtures_vehicleIndex/put-line-diagram-3-params.json"), "UTF-8"));
 
 		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
 		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + lineDiagramId, params, entity);
 		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 		System.out.println(response.toString());
 		System.out.println("line-diagrmm-id: " + lineDiagramId);
-	}
-
-	@Test
-	public void put_area_diagram()
-			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
-
-		areaDiagramId = UUID.randomUUID();
-
-		Map<String, String> valuesMap = new HashMap<>();
-		// title
-		valuesMap.put("visualization-titel", "pretty-area-diagram-reference-1");
-		// fields
-		valuesMap.put("first-x-param", "registrationDate_yy-mm-dd");
-		valuesMap.put("first-y-param", "CO2-Ausstoss.bis");
-		valuesMap.put("second-y-param", "Leistung.bis");
-		// labels
-		valuesMap.put("first-x-param-label", "register date");
-		valuesMap.put("first-y-param-label", "Co2 Austoﬂ (g/Km)");
-		valuesMap.put("second-y-param-label", "Leistung (PS)");
-		// fontSizes
-		valuesMap.put("font-size-x", "20px");
-		valuesMap.put("font-size-y", "15px");
-
-		valuesMap.put("search-id", Constants.KibanaSavedObjectMeta_searchSourceJSON_Search_ID);
-
-		ClassLoader classLoader = getClass().getClassLoader();
-		StrSubstitutor sub = new StrSubstitutor(valuesMap);
-		String payload = sub.replace(
-				IOUtils.toString(classLoader.getResourceAsStream("fixtures/put-area-diagram-payload.json"), "UTF-8"));
-
-		entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
-		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + areaDiagramId, params, entity);
-		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
-		System.out.println(response.toString());
-		System.out.println("area-diagram-id: " + areaDiagramId);
 	}
 }

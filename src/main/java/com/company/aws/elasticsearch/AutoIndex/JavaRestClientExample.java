@@ -1,4 +1,4 @@
-package com.company.aws.elasticsearch;
+package com.company.aws.elasticsearch.AutoIndex;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -14,6 +14,8 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+
+import com.campany.aws.elasticsearch.general.Constants;
 
 public class JavaRestClientExample {
 

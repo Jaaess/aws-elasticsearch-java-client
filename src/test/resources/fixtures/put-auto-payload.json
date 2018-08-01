@@ -4,18 +4,18 @@
 	"Auftrittsdatum":  "${auftrittsdatum}",
 	"Letzter-Neupreis": {
 		"Einheit": "EUR",
-		"von": ${letzter-neupreis-von},
-		"bis":  ${letzter-neupreis-bis}
+		"von": "${letzter-neupreis-von}",
+		"bis": "${letzter-neupreis-bis}"
 	},
 	"Leistung": {
 		"Einheit": "PS",
-		"von": ${leistung-von},
-		"bis": ${leistung-bis}        
+		"von": "${leistung-von}",
+		"bis": "${leistung-bis}"        
 	},
 	"CO2-Ausstoss": {
 		"Einheit": "g/km",
-		"von": ${co2-austoss-von},
-		"bis": ${co2-austoss-bis}
+		"von": "${co2-austoss-von}",
+		"bis": "${co2-austoss-bis}"
 	},
 	"Aufbauarten": "${aufbauarten}",
 	"Kraftstoff": "${kraftstoff}",

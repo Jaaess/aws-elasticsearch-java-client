@@ -1,0 +1,14 @@
+{
+	"type": "visualization",
+	"updated_at": "2018-07-31T19:17:33.737Z",
+	"visualization": {
+		"title": "${visualization-titel}",
+		"visState": "{\"title\":\"${visualization-titel}\",\"type\":\"line\",\"params\":{\"addLegend\":true,\"addTimeMarker\":true,\"addTooltip\":true,\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"labels\":{\"filter\":true,\"fontSize\":\"${font-size-x}\",\"rotate\":0,\"show\":true,\"truncate\":100},\"position\":\"bottom\",\"scale\":{\"type\":\"${scale-type}\"},\"show\":true,\"style\":{},\"title\":{},\"type\":\"category\"}],\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":null},\"legendPosition\":\"top\",\"seriesParams\":[{\"data\":{\"id\":\"1\",\"label\":\"${third-y-param-label}\"},\"drawLinesBetweenPoints\":true,\"mode\":\"normal\",\"show\":\"true\",\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"},{\"data\":{\"id\":\"2\",\"label\":\"${second-y-param-label}\"},\"drawLinesBetweenPoints\":true,\"mode\":\"normal\",\"show\":true,\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"},{\"data\":{\"id\":\"3\",\"label\":\"${first-y-param-label}\"},\"drawLinesBetweenPoints\":true,\"mode\":\"normal\",\"show\":true,\"showCircles\":true,\"type\":\"line\",\"valueAxis\":\"ValueAxis-1\"}],\"times\":[],\"type\":\"line\",\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"labels\":{\"filter\":false,\"fontSize\":\"${font-size-y}\",\"rotate\":0,\"show\":true,\"truncate\":100},\"name\":\"LeftAxis-1\",\"position\":\"left\",\"scale\":{\"mode\":\"normal\",\"type\":\"${scale-type}\"},\"show\":true,\"style\":{},\"title\":{\"text\":\"${third-y-param-label}\"},\"type\":\"value\"}],\"orderBucketsBySum\":false},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"${third-y-param}\",\"customLabel\":\"${third-y-param-label}\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"${second-y-param}\",\"customLabel\":\"${second-y-param-label}\"}},{\"id\":\"3\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"${first-y-param}\",\"customLabel\":\"${first-y-param-label}\"}},{\"id\":\"4\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"${first-x-param}\",\"interval\":\"${x-interval}\",\"customInterval\":\"2h\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"${first-x-param-label}\"}}]}",
+		"uiStateJSON": "{\"vis\":{\"legendOpen\":true}}",
+		"description": "",
+		"version": 1,
+		"kibanaSavedObjectMeta": {
+			"searchSourceJSON": "{\"index\":\"${search-id}\",\"filter\":[],\"query\":{\"language\":\"lucene\",\"query\":\"\"}}"
+		}
+	}
+}
