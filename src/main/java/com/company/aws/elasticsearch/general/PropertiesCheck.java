@@ -1,4 +1,4 @@
-package com.company.aws.elasticsearch.AutoIndex;
+package com.company.aws.elasticsearch.general;
 
 import java.io.FileInputStream;
 import java.util.Properties;

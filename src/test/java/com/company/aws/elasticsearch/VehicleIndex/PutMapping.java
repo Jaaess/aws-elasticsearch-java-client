@@ -21,8 +21,8 @@ import org.junit.Test;
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
-import com.campany.aws.elasticsearch.general.Constants;
-import com.company.aws.elasticsearch.AutoIndex.AWSRequestSigningApacheInterceptor;
+import com.company.aws.elasticsearch.general.AWSRequestSigningApacheInterceptor;
+import com.company.aws.elasticsearch.general.Constants;
 
 public class PutMapping {
 

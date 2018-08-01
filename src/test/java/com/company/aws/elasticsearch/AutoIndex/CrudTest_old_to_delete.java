@@ -22,7 +22,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.campany.aws.elasticsearch.general.Constants;
+import com.company.aws.elasticsearch.general.Constants;
 
 public class CrudTest_old_to_delete {
 

@@ -15,7 +15,7 @@ import org.apache.http.nio.entity.NStringEntity;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 
-import com.campany.aws.elasticsearch.general.Constants;
+import com.company.aws.elasticsearch.general.Constants;
 
 public class JavaRestClientExample {
 
