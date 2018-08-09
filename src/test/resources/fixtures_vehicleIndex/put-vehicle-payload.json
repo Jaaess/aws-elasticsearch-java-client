@@ -27,6 +27,10 @@
 	"fahrzeuggeschwindigkeit": ${fahrzeuggeschwindigkeit},
 	"ansauglufttemperatur": ${ansauglufttemperatur},
 	"airbag-is-active": ${airbag-is-active},
+	"location": { 
+    	"lat": ${latitude},
+    	"lon": ${longitude}
+  	},
 	"gps-coordinates": {
 		"latitude": ${latitude},
 		"longitude": ${longitude}
