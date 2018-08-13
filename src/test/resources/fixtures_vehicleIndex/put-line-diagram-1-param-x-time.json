@@ -1,0 +1,14 @@
+{
+	"type": "visualization",
+	"updated_at": "2018-08-09T09:50:46.701Z",
+	"visualization": {
+		"title": "${visualization-titel}",
+		"visState": "{\"title\":\"${visualization-titel}\",\"type\":\"line\",\"params\":{\"type\":\"line\",\"grid\":{\"categoryLines\":true,\"style\":{\"color\":\"#eee\"},\"valueAxis\":\"ValueAxis-1\"},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"truncate\":100,\"filter\":true,\"rotate\":${rotate-x},\"fontSize\":\"${font-size-x}\"},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"${scale-type-y}\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":100,\"fontSize\":\"${font-size-y}\"},\"title\":{\"text\":\"${first-y-param-label}\"}}],\"seriesParams\":[{\"show\":\"true\",\"type\":\"line\",\"mode\":\"normal\",\"data\":{\"label\":\"${first-y-param-label}\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"showCircles\":true,\"interpolate\":\"linear\",\"lineWidth\":${line-width}}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"top\",\"times\":[],\"addTimeMarker\":true},\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"avg\",\"schema\":\"metric\",\"params\":{\"field\":\"${first-y-param}\",\"customLabel\":\"${first-y-param-label}\"}},{\"id\":\"2\",\"enabled\":true,\"type\":\"date_histogram\",\"schema\":\"segment\",\"params\":{\"field\":\"${first-x-param}\",\"interval\":\"${x-interval}\",\"customInterval\":\"5s\",\"min_doc_count\":1,\"extended_bounds\":{},\"customLabel\":\"${first-x-param-label}\"}}]}",
+		"uiStateJSON": "{}",
+		"description": "",
+		"version": 1,
+		"kibanaSavedObjectMeta": {
+			"searchSourceJSON": "{\"index\":\"${search-id}\",\"filter\":[],\"query\":{\"query\":\"\",\"language\":\"lucene\"}}"
+		}
+	}
+}

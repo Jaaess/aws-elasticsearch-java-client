@@ -1,0 +1,16 @@
+{
+	"type": "dashboard",
+	"updated_at": "2018-08-09T12:27:26.662Z",
+	"dashboard": {
+		"title": "${dashboard-titel}",
+		"hits": 0,
+		"description": "",
+		"panelsJSON": "[{\"panelIndex\":\"1\",\"gridData\":{\"x\":0,\"y\":0,\"w\":12,\"h\":6,\"i\":\"1\"},\"version\":\"6.2.3\",\"type\":\"visualization\",\"id\":\"${visualization-1-id}\"},{\"panelIndex\":\"3\",\"gridData\":{\"x\":0,\"y\":6,\"w\":12,\"h\":5,\"i\":\"3\"},\"version\":\"6.2.3\",\"type\":\"visualization\",\"id\":\"${visualization-2-id}\"},{\"panelIndex\":\"4\",\"gridData\":{\"x\":0,\"y\":11,\"w\":12,\"h\":5,\"i\":\"4\"},\"version\":\"6.2.3\",\"type\":\"visualization\",\"id\":\"${visualization-3-id}\"}]",
+		"optionsJSON": "{\"darkTheme\":${dark-theme},\"useMargins\":${use-margin},\"hidePanelTitles\":${hide-panel-titles}}",
+		"version": 1,
+		"timeRestore": false,
+		"kibanaSavedObjectMeta": {
+			"searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[{\"meta\":{\"index\":\"${search-id}\",\"negate\":false,\"disabled\":false,\"alias\":null,\"type\":\"range\",\"key\":\"auftrittsdatum\",\"value\":\"now-10s+2h to now+2h\",\"params\":{\"gte\":\"now-10s+2h\",\"lt\":\"now+2h\"}},\"range\":{\"auftrittsdatum\":{\"gte\":\"now-10s+2h\",\"lt\":\"now+2h\"}},\"$state\":{\"store\":\"appState\"}}],\"highlightAll\":true,\"version\":true}"
+		}
+	}
+}
