@@ -4,10 +4,14 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.io.IOUtils;
@@ -55,6 +59,26 @@ public class SnapshotAWSTest {
 	Response response;
 	Map<String, String> params;
 
+	public class Auto {
+
+		private String marke;
+		private String modell;
+
+		public Auto(String marke, String modell) {
+			super();
+			this.marke = marke;
+			this.modell = modell;
+		}
+
+		public String getMarke() {
+			return marke;
+		}
+
+		public String getModell() {
+			return modell;
+		}
+	}
+
 	@Before
 	public void initialize() throws IOException {
 
@@ -77,6 +101,7 @@ public class SnapshotAWSTest {
 		System.out.println(response.toString());
 	}
 
+<<<<<<< HEAD:src/test/java/com/company/aws/elasticsearch/SnapshotAWSTest.java
 	@Test
 	public void perform_100_posts_old()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
@@ -110,13 +135,47 @@ public class SnapshotAWSTest {
 			System.out.println(response.toString());
 			Thread.sleep(500);
 		}
+=======
+	private Auto getRandomAuto() {
+
+		Map<String, List<String>> map = new LinkedHashMap<String, List<String>>();
+		map.put("Alfa Romeo", Arrays.asList("Mito", "4C", "Giulia"));
+		map.put("Alpina", Arrays.asList("B6"));
+		map.put("Aston Martin", Arrays.asList("DB11", "DB9", "Rapid S"));
+		map.put("Bentley", Arrays.asList("Continental", "Flying spur", "Mulsanne"));
+		map.put("Citröen", Arrays.asList("Berlingo", "aircross", "C5"));
+		map.put("Scoda", Arrays.asList("Octavia", "Kodiaq", "Yeti"));
+		map.put("Opel", Arrays.asList("Combo", "Corsa", "adam"));
+		map.put("Porsche", Arrays.asList("Cayman", "Cayenne", "Boxter"));
+		map.put("Volvo", Arrays.asList("S90", "V40", "s80"));
+		map.put("Nissan", Arrays.asList("one", "two", "three"));
+		map.put("Subaru", Arrays.asList("BRZ", "Forester", "Outback"));
+		map.put("BMW", Arrays.asList("X1", "X3", "Z4"));
+		map.put("Peugeot", Arrays.asList("Partner", "508", "Boxer"));
+		map.put("Ford", Arrays.asList("Edge", "Fiesta", "Focus"));
+		map.put("Toyota", Arrays.asList("Auris", "Aygo", "iQ"));
+		map.put("VW", Arrays.asList("Amarok", "Caddy", "Golf8"));
+		map.put("Audi", Arrays.asList("A1", "A3", "Q7"));
+		map.put("Renault", Arrays.asList("Clio", "Megane", "kango"));
+		map.put("Mercedes-Benz", Arrays.asList("A-klasse", "CLS", "C-Klasse", "S-Klasse"));
+
+		// Get a random marke.
+		Object[] crunchifyKeys = map.keySet().toArray();
+		Object key = crunchifyKeys[new Random().nextInt(crunchifyKeys.length)];
+		// get random modell
+		Random r = new Random();
+		System.out.println(
+				"Marke: " + (String) key + "\t Modell: " + map.get(key).get(r.nextInt(map.get(key).size())) + "\n");
+
+		return new Auto((String) key, map.get(key).get(r.nextInt(map.get(key).size())));
+>>>>>>> 2ec7c04... added method getRandomAuto(), deleted old payload:src/test/java/com/company/aws/elasticsearch/AutoIndex/PutDataTest.java
 	}
 
 	@Test
 	public void perform_100_posts()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
 
-		for (int i = 1000; i < 1100; i++) {
+		for (int i = 1000; i < 1050; i++) {
 			int randomNum = ThreadLocalRandom.current().nextInt(100, 300 + 1);
 			int randomNum_2 = ThreadLocalRandom.current().nextInt(100, 300 + 1);
 			int randomNum_3 = ThreadLocalRandom.current().nextInt(0, 30000);
@@ -126,8 +185,9 @@ public class SnapshotAWSTest {
 			String random_date = random_year + "-" + random_month + "-" + random_day;
 
 			Map<String, String> valuesMap = new HashMap<>();
-			valuesMap.put("modell", "modell-" + i);
-			valuesMap.put("marke", "marke-" + i);
+			Auto randomAuto = getRandomAuto();
+			valuesMap.put("modell", randomAuto.getModell());
+			valuesMap.put("marke", randomAuto.getMarke());
 			valuesMap.put("auftrittsdatum", Integer.toString(2022 + i - 1000));
 			valuesMap.put("letzter-neupreis-von", Integer.toString(i - randomNum_3 + 54580));
 			valuesMap.put("letzter-neupreis-bis", Integer.toString(i - randomNum_3 + 54580));
