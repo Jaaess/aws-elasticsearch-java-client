@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -19,11 +18,12 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
-import org.apache.log4j.PropertyConfigurator;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -32,6 +32,8 @@ import com.company.aws.elasticsearch.general.AWSRequestSigningApacheInterceptor;
 import com.company.aws.elasticsearch.general.Constants;
 
 public class CompleteScenarioTest {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(CompleteScenarioTest.class);
 
 	static final AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
 	private static String indexingPath = "/.kibana/doc";
@@ -50,10 +52,6 @@ public class CompleteScenarioTest {
 	@Before
 	public void setUp() throws IOException {
 
-		Properties log4jProp = new Properties();
-		log4jProp.setProperty("log4j.rootLogger", "WARN");
-		PropertyConfigurator.configure(log4jProp);
-
 		AWS4Signer signer = new AWS4Signer();
 		signer.setServiceName(Constants.ES_SERVICE_NAME);
 		signer.setRegionName(Constants.REGION);
@@ -67,6 +65,7 @@ public class CompleteScenarioTest {
 		params = Collections.emptyMap();
 		response = esClient.performRequest("PUT", snapshotPath, params, entity);
 		System.out.println(response.toString());
+		LOGGER.debug("response snapshot", response.toString());
 	}
 
 	@Test
@@ -107,6 +106,7 @@ public class CompleteScenarioTest {
 		response = esClient.performRequest("PUT", indexingPath + "/visualization:" + lineDiagramId, params, entity);
 		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 		System.out.println(response.toString());
+		LOGGER.debug("response create visualization", response.toString());
 		System.out.println("line-diagrmm-id: " + lineDiagramId);
 		//
 		// Step 2: Create the dash board, embed the visualization inside it, set the
@@ -140,6 +140,7 @@ public class CompleteScenarioTest {
 		response = esClient.performRequest("PUT", indexingPath + "/dashboard:" + dashboardId, params, entity);
 		assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 		System.out.println(response.toString());
+		LOGGER.info("response create dashboard", response.toString());
 		System.out.println("dashboard-id: " + dashboardId);
 		//
 		// Step 3: Get shareable dash board link.
@@ -157,6 +158,7 @@ public class CompleteScenarioTest {
 		sub = new StrSubstitutor(iframeValues);
 		System.out.println("Share saved dashboard embedded iframe: \n"
 				+ sub.replace(Constants.DASHBOARD_SHAREABLE_EMBEDDED_IFRAME));
+		LOGGER.debug("shareable dashboard", sub.replace(Constants.DASHBOARD_SHAREABLE_EMBEDDED_IFRAME));
 
 	}
 

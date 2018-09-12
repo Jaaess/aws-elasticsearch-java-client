@@ -2,6 +2,9 @@ package com.company.aws.dashboard;
 
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -17,6 +20,9 @@ import javafx.stage.Stage;
 
 public class Runner extends Application {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(Runner.class);
+	// private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+
 	private Scene scene;
 	MyBrowser myBrowser;
 
@@ -28,11 +34,13 @@ public class Runner extends Application {
 		scene.getStylesheets().add("BrowserToolbar.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+
+		LOGGER.info("Start", "GOOD START");
 	}
 
 	/**
 	 * @param args
-	 * the command line arguments
+	 *            the command line arguments
 	 */
 	public static void main(String[] args) {
 		launch(args);

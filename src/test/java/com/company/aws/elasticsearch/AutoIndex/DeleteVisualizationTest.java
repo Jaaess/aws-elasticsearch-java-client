@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -18,7 +17,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
-import org.apache.log4j.PropertyConfigurator;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.junit.Before;
@@ -47,10 +45,6 @@ public class DeleteVisualizationTest {
 
 	@Before
 	public void initialize() throws IOException {
-
-		Properties log4jProp = new Properties();
-		log4jProp.setProperty("log4j.rootLogger", "WARN");
-		PropertyConfigurator.configure(log4jProp);
 
 		AWS4Signer signer = new AWS4Signer();
 		signer.setServiceName(Constants.ES_SERVICE_NAME);

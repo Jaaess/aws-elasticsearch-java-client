@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -23,7 +22,6 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
-import org.apache.log4j.PropertyConfigurator;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.junit.Before;
@@ -81,10 +79,6 @@ public class PutDataTest {
 	@Before
 	public void initialize() throws IOException {
 
-		Properties log4jProp = new Properties();
-		log4jProp.setProperty("log4j.rootLogger", "WARN");
-		PropertyConfigurator.configure(log4jProp);
-
 		AWS4Signer signer = new AWS4Signer();
 		signer.setServiceName(Constants.ES_SERVICE_NAME);
 		signer.setRegionName(Constants.REGION);
@@ -128,7 +122,7 @@ public class PutDataTest {
 	public void perform_100_posts()
 			throws ClientProtocolException, IOException, InterruptedException, UnknownHostException {
 
-		for (int i = 1000; i < 1100; i++) {
+		for (int i = 1000; i < 2800; i++) {
 			int randomNum = ThreadLocalRandom.current().nextInt(100, 300 + 1);
 			int randomNum_2 = ThreadLocalRandom.current().nextInt(100, 300 + 1);
 			int randomNum_3 = ThreadLocalRandom.current().nextInt(0, 30000);
@@ -142,7 +136,13 @@ public class PutDataTest {
 			int random_saugrohrdruck = ThreadLocalRandom.current().nextInt(20, 60);
 			int random_fahrzeuggeschwindigkeit = ThreadLocalRandom.current().nextInt(0, 460);
 
-			String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+			// SimpleDateFormat isoFormat = new SimpleDateFormat(("yyyy-MM-dd HH:mm:ss z"));
+			// isoFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+			// Date date = isoFormat.parse(Calendar.getInstance().getTime());
+
+			String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZZ")
+					.format(Calendar.getInstance().getTime());
+
 			// get datetime in millis
 			// String timeStamp = Long.toString(Calendar.getInstance().getTimeInMillis());
 
@@ -177,8 +177,10 @@ public class PutDataTest {
 			// Index a document
 			entity = new NStringEntity(payload, ContentType.APPLICATION_JSON);
 			response = esClient.performRequest("PUT", Constants.INDEXING_PATH + "/" + i, params, entity);
+			assertEquals(response.getStatusLine().getStatusCode(), HttpStatus.SC_OK, HttpStatus.SC_CREATED);
 			System.out.println(response.toString());
-			Thread.sleep(1000);
+			Thread.sleep(500);
+
 		}
 	}
 

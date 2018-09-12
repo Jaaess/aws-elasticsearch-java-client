@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.Properties;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.http.HttpResponse;
@@ -16,7 +15,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.log4j.PropertyConfigurator;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.client.transport.TransportClient;
 import org.junit.Before;
@@ -30,11 +28,6 @@ public class CrudTest_old_to_delete {
 
 	@Before
 	public void initialize() throws UnknownHostException {
-
-		Properties log4jProp = new Properties();
-		log4jProp.setProperty("log4j.rootLogger", "WARN");
-		PropertyConfigurator.configure(log4jProp);
-
 		// transportClient = TransportClient.builder().build()
 		// .addTransportAddress(new
 		// InetSocketTransportAddress(InetAddress.getByName(Constants.AES_ENDPOINT),

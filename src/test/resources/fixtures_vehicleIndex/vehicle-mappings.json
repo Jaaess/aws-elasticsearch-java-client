@@ -39,7 +39,7 @@
 			},
 			"auftrittsdatum": {
 				"type": "date",
-				"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+				"format": "yyyy-MM-dd HH:mm:ss.SSSZZ||yyyy-MM-dd||epoch_millis"
 			},
 			"letzter-neupreis": {
 				"properties": {
